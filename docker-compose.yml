@@ -1,0 +1,26 @@
+# Postgres local pour le developpement du backend (SPEC_DESIGN.md section 9.4).
+# La production utilise le meme moteur, auto-heberge sur la machine Mantara.
+#   pnpm db:up     -> demarre Postgres
+#   pnpm db:down   -> arrete
+#   pnpm db:logs   -> logs
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mantara-voice-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mantara
+      POSTGRES_PASSWORD: mantara_dev_pw
+      POSTGRES_DB: mantara_voice_inbox
+    ports:
+      - "5432:5432"
+    volumes:
+      - mantara_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mantara -d mantara_voice_inbox"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mantara_pgdata:

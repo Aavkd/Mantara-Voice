@@ -1,0 +1,9 @@
+# sharp / unrs-resolver sont des dependances natives optionnelles : on n'execute
+# pas leurs build scripts (non requis en dev ; decision explicite = pas d'erreur).
+allowBuilds:
+  sharp: false
+  unrs-resolver: false
+
+# Ne pas relancer un install de verification avant chaque script (echouait sur
+# les builds ignores ci-dessus). Les deps sont figees par pnpm-lock.yaml.
+verifyDepsBeforeRun: false

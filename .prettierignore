@@ -1,0 +1,9 @@
+node_modules
+.next
+out
+build
+pnpm-lock.yaml
+next-env.d.ts
+page_design(handoff)
+.claude
+SPEC_DESIGN.md

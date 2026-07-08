@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,400..600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f5f0e7; --surface:#fffdf8; --ink:#26221c; --muted:#8a8175;
+    --faint:#b6ad9e; --border:#e7dfd1; --hair:#efe8db; --canvas:#e8e1d4;
+    --accent:#b5502f; --accent-soft:#f3e2d8; --radius:20px;
+    --amber:#c08a2e; --good:#5c7a55;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background:var(--canvas);font-family:'Hanken Grotesk',system-ui,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{color:var(--accent);opacity:.8;}
+  ::-webkit-scrollbar{width:0;height:0;}
+  @keyframes vibar{0%,100%{transform:scaleY(.22)}50%{transform:scaleY(1)}}
+  @keyframes ring{0%{transform:scale(1);opacity:.45}80%{transform:scale(2.4);opacity:0}100%{opacity:0}}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+  @keyframes ring2{to{transform:rotate(360deg)}}
+</style>
+</helmet>
+<div style="{{themeVars}}">
+<div style="max-width:none;padding:72px 64px 120px;">
+
+  <!-- DOC HEADER -->
+  <header style="display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-bottom:8px;border-bottom:1px solid var(--border);padding-bottom:40px;">
+    <div style="max-width:720px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:26px;">
+        <div style="width:26px;height:26px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--surface);"></div>
+        </div>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);">Mantara — Voice Inbox</span>
+      </div>
+      <h1 style="font-size:64px;line-height:.98;font-weight:800;letter-spacing:-0.03em;margin:0 0 20px;text-wrap:balance;">Transformer une pensée dictée<br>en système de suivi fiable.</h1>
+      <p style="font-size:18px;line-height:1.5;color:var(--muted);max-width:600px;margin:0;font-weight:400;">Maquettes haute fidélité de tous les écrans du MVP — capture vocale, tri par l'IA, validation et organisation par projet. Mobile et bureau.</p>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);line-height:2;text-align:right;">
+      <div>9 écrans · mobile + bureau</div>
+      <div>Français · haute fidélité</div>
+      <div style="color:var(--faint);">v1 — 8 juil. 2026</div>
+    </div>
+  </header>
+
+  <!-- ============ SECTION: AUTH ============ -->
+  <section data-screen-label="Authentification" style="margin-top:80px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">01</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Authentification</h2>
+      <span style="font-size:15px;color:var(--muted);">Connexion e-mail + mot de passe · vérification via Resend</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: Connexion -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Connexion</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);flex-shrink:0;">
+            <span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span>
+          </div>
+          <div style="flex:1;padding:44px 34px;display:flex;flex-direction:column;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:auto;">
+              <div style="width:22px;height:22px;border-radius:7px;background:var(--accent);"></div>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);">Mantara</span>
+            </div>
+            <h3 style="font-size:38px;font-weight:800;letter-spacing:-0.03em;line-height:1.02;margin:0 0 12px;">Bon retour.</h3>
+            <p style="font-size:15px;color:var(--muted);margin:0 0 34px;line-height:1.5;">Videz votre tête. On classe le reste.</p>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block;">E-mail</label>
+            <div style="border:1px solid var(--border);border-radius:14px;padding:16px 16px;font-size:16px;color:var(--ink);margin-bottom:20px;background:var(--paper);">jean@mantara.co</div>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block;">Mot de passe</label>
+            <div style="border:1px solid var(--border);border-radius:14px;padding:16px 16px;font-size:16px;color:var(--faint);margin-bottom:14px;background:var(--paper);display:flex;justify-content:space-between;align-items:center;"><span>••••••••••</span><span style="font-size:13px;color:var(--muted);">Afficher</span></div>
+            <div style="text-align:right;margin-bottom:26px;"><span style="font-size:14px;color:var(--accent);">Mot de passe oublié ?</span></div>
+            <button style="width:100%;border:none;background:var(--ink);color:var(--surface);font-family:inherit;font-size:16px;font-weight:600;padding:17px;border-radius:14px;cursor:pointer;">Se connecter</button>
+            <div style="margin-top:auto;padding-top:34px;text-align:center;font-size:14px;color:var(--muted);">Pas de compte ? <span style="color:var(--accent);font-weight:600;">Créer un compte</span></div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Mobile: Créer un compte -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Créer un compte</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink);flex-shrink:0;">
+            <span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span>
+          </div>
+          <div style="flex:1;padding:44px 34px;display:flex;flex-direction:column;">
+            <div style="font-size:14px;color:var(--muted);margin-bottom:auto;cursor:pointer;">← Connexion</div>
+            <h3 style="font-size:38px;font-weight:800;letter-spacing:-0.03em;line-height:1.02;margin:0 0 12px;">Créer votre<br>espace.</h3>
+            <p style="font-size:15px;color:var(--muted);margin:0 0 34px;line-height:1.5;">Un e-mail de vérification vous sera envoyé.</p>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block;">Nom</label>
+            <div style="border:1px solid var(--border);border-radius:14px;padding:16px;font-size:16px;color:var(--ink);margin-bottom:18px;background:var(--paper);">Jean Mercier</div>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block;">E-mail</label>
+            <div style="border:1px solid var(--border);border-radius:14px;padding:16px;font-size:16px;color:var(--ink);margin-bottom:18px;background:var(--paper);">jean@mantara.co</div>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block;">Mot de passe</label>
+            <div style="border:1px solid var(--border);border-radius:14px;padding:16px;font-size:16px;color:var(--faint);margin-bottom:10px;background:var(--paper);">••••••••••</div>
+            <div style="display:flex;gap:6px;margin-bottom:28px;"><div style="height:4px;flex:1;border-radius:3px;background:var(--good);"></div><div style="height:4px;flex:1;border-radius:3px;background:var(--good);"></div><div style="height:4px;flex:1;border-radius:3px;background:var(--good);"></div><div style="height:4px;flex:1;border-radius:3px;background:var(--border);"></div></div>
+            <button style="width:100%;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:16px;font-weight:600;padding:17px;border-radius:14px;cursor:pointer;">Créer le compte</button>
+            <p style="margin-top:auto;padding-top:30px;font-size:12px;color:var(--faint);line-height:1.5;text-align:center;">En continuant, vous acceptez les conditions d'utilisation de Mantara.</p>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Desktop: Connexion -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Connexion</figcaption>
+        <div style="width:760px;height:520px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);display:flex;">
+          <div style="width:320px;background:var(--ink);color:var(--surface);padding:48px 40px;display:flex;flex-direction:column;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:22px;height:22px;border-radius:7px;background:var(--accent);"></div>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:.8;">Mantara</span>
+            </div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.55;margin-bottom:14px;">Voice Inbox</div>
+              <p style="font-size:24px;font-weight:600;line-height:1.25;letter-spacing:-0.02em;margin:0;">« Dicter, comprendre, classer, agir. »</p>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.45;">Capture sans friction</div>
+          </div>
+          <div style="flex:1;padding:56px 52px;display:flex;flex-direction:column;justify-content:center;">
+            <h3 style="font-size:30px;font-weight:800;letter-spacing:-0.02em;margin:0 0 28px;">Se connecter</h3>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block;">E-mail</label>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:15px;color:var(--ink);margin-bottom:18px;background:var(--paper);">jean@mantara.co</div>
+            <label style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block;">Mot de passe</label>
+            <div style="border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:15px;color:var(--faint);margin-bottom:20px;background:var(--paper);">••••••••••</div>
+            <div style="display:flex;gap:14px;align-items:center;">
+              <button style="border:none;background:var(--ink);color:var(--surface);font-family:inherit;font-size:15px;font-weight:600;padding:14px 28px;border-radius:12px;cursor:pointer;">Se connecter</button>
+              <span style="font-size:14px;color:var(--accent);">Mot de passe oublié ?</span>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION: CAPTURE ============ -->
+  <section data-screen-label="Capture" style="margin-top:96px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">02</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Capture</h2>
+      <span style="font-size:15px;color:var(--muted);">Dicter une pensée en moins de 10 secondes · le moment central</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: Prêt -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Prêt à enregistrer</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:8px 30px 0;display:flex;justify-content:space-between;align-items:center;">
+            <div><div style="font-size:26px;font-weight:800;letter-spacing:-0.02em;">Capture</div></div>
+            <div style="width:38px;height:38px;border-radius:50%;background:var(--paper);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);">⌘</div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;">
+            <p style="font-size:19px;text-align:center;color:var(--muted);line-height:1.45;margin:0 0 60px;text-wrap:balance;">Appuyez et parlez.<br>On s'occupe du classement.</p>
+            <div style="position:relative;width:150px;height:150px;display:flex;align-items:center;justify-content:center;">
+              <div style="position:absolute;inset:0;border-radius:50%;border:1px solid var(--accent-soft);"></div>
+              <div style="width:112px;height:112px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 18px 40px -12px var(--accent);">
+                <div style="width:26px;height:40px;border-radius:14px;background:#fff;"></div>
+              </div>
+            </div>
+            <div style="margin-top:60px;padding:11px 22px;border:1px solid var(--border);border-radius:100px;font-size:14px;color:var(--muted);display:flex;align-items:center;gap:9px;">✎ Écrire à la place</div>
+          </div>
+          <div style="height:84px;border-top:1px solid var(--hair);display:flex;align-items:center;justify-content:space-around;padding:0 24px 14px;flex-shrink:0;">
+            <div style="text-align:center;color:var(--accent);"><div style="font-size:19px;">◉</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Capture</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▤</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Inbox</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◷</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Auj.</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▦</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Projets</div></div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Mobile: Enregistrement (HERO, alive) -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);">Mobile · Enregistrement en cours ●</figcaption>
+        <div style="width:378px;height:800px;background:var(--ink);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.55);position:relative;display:flex;flex-direction:column;color:var(--surface);">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#fff;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;opacity:.6;">● ● ●</span></div>
+          <div style="padding:16px 30px;display:flex;align-items:center;gap:10px;">
+            <span style="width:9px;height:9px;border-radius:50%;background:var(--accent);animation:blink 1.1s infinite;"></span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.1em;">ENREGISTREMENT</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;margin-left:auto;color:#fff;">00:08</span>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 40px;">
+            {{ wave }}
+            <p style="font-size:17px;text-align:center;line-height:1.5;margin:40px 0 0;opacity:.72;font-weight:400;text-wrap:balance;">« Relancer le client X sur la validation du devis avant vendredi… »</p>
+          </div>
+          <div style="padding:0 40px 54px;display:flex;align-items:center;justify-content:center;gap:34px;">
+            <div style="width:56px;height:56px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:15px;opacity:.7;">✕</div>
+            <div style="position:relative;width:96px;height:96px;display:flex;align-items:center;justify-content:center;">
+              <div style="position:absolute;inset:0;border-radius:50%;background:var(--accent);animation:ring 1.8s ease-out infinite;"></div>
+              <div style="width:88px;height:88px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;">
+                <div style="width:26px;height:26px;border-radius:6px;background:#fff;"></div>
+              </div>
+            </div>
+            <div style="width:56px;height:56px;border-radius:50%;border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:15px;opacity:.7;">‖</div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Mobile: Analyse en cours -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Transcription & analyse IA</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="flex:1;padding:36px 34px;display:flex;flex-direction:column;">
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;">Transcription</div>
+            <div style="background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:20px;font-size:15px;line-height:1.55;color:var(--ink);margin-bottom:34px;">Relancer le client X sur la validation du devis avant vendredi, et vérifier s'il faut ajuster le périmètre du site vitrine.</div>
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <div style="display:flex;align-items:center;gap:14px;"><span style="width:22px;height:22px;border-radius:50%;background:var(--good);"></span><span style="font-size:15px;">Voix transcrite</span></div>
+              <div style="display:flex;align-items:center;gap:14px;"><span style="width:22px;height:22px;border-radius:50%;border:2px solid var(--accent);border-top-color:transparent;animation:ring2 .9s linear infinite;"></span><span style="font-size:15px;font-weight:600;">Analyse du contexte…</span></div>
+              <div style="display:flex;align-items:center;gap:14px;opacity:.4;"><span style="width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);"></span><span style="font-size:15px;">Classement par projet</span></div>
+              <div style="display:flex;align-items:center;gap:14px;opacity:.4;"><span style="width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border);"></span><span style="font-size:15px;">Extraction des tâches</span></div>
+            </div>
+            <div style="margin-top:auto;background:var(--accent-soft);border-radius:16px;padding:18px 20px;font-size:14px;color:var(--ink);line-height:1.5;">L'IA structure votre note. Si elle est sûre, elle la classe directement — sinon elle la place dans l'Inbox.</div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Desktop: Capture rapide (overlay) -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Capture rapide (⌘K)</figcaption>
+        <div style="width:760px;height:520px;background:var(--canvas);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;inset:0;background:rgba(38,34,28,.35);"></div>
+          <div style="position:relative;width:520px;background:var(--surface);border-radius:20px;box-shadow:0 40px 80px -30px rgba(40,34,26,.6);padding:40px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;"><span style="width:9px;height:9px;border-radius:50%;background:var(--accent);animation:blink 1.1s infinite;"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;color:var(--muted);">ENREGISTREMENT · 00:08</span></div>
+            <div style="display:flex;align-items:center;gap:20px;margin-bottom:28px;">
+              <div style="position:relative;width:76px;height:76px;flex-shrink:0;display:flex;align-items:center;justify-content:center;">
+                <div style="position:absolute;inset:0;border-radius:50%;background:var(--accent);animation:ring 1.8s ease-out infinite;"></div>
+                <div style="width:68px;height:68px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;"><div style="width:20px;height:20px;border-radius:5px;background:#fff;"></div></div>
+              </div>
+              <div style="flex:1;">{{ wave }}</div>
+            </div>
+            <p style="font-size:18px;line-height:1.5;margin:0 0 28px;color:var(--ink);">« Relancer le client X sur la validation du devis avant vendredi… »</p>
+            <div style="display:flex;gap:12px;align-items:center;">
+              <button style="border:none;background:var(--ink);color:var(--surface);font-family:inherit;font-size:15px;font-weight:600;padding:13px 26px;border-radius:12px;cursor:pointer;">Analyser</button>
+              <button style="border:1px solid var(--border);background:transparent;color:var(--muted);font-family:inherit;font-size:15px;padding:13px 22px;border-radius:12px;cursor:pointer;">✎ Écrire</button>
+              <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--faint);">échap pour annuler</span>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION: INBOX ============ -->
+  <section data-screen-label="Inbox" style="margin-top:96px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">03</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Inbox — validation IA</h2>
+      <span style="font-size:15px;color:var(--muted);">Vérifier ce que l'IA a compris · l'IA propose, vous gardez le contrôle</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: Inbox liste -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · À valider</figcaption>
+        <div style="width:378px;height:800px;background:var(--paper);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:6px 26px 16px;">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;"><h3 style="font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:0;">Inbox</h3><span style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);">4 à valider</span></div>
+          </div>
+          <div style="flex:1;overflow:hidden;padding:0 22px;display:flex;flex-direction:column;gap:14px;">
+            <!-- card strong -->
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink);background:var(--paper);border:1px solid var(--border);padding:5px 11px;border-radius:100px;"><span style="width:7px;height:7px;border-radius:2px;background:var(--accent);"></span>Client X — Site vitrine</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--good);letter-spacing:.05em;">● FORTE 0.92</span>
+              </div>
+              <h4 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0 0 6px;line-height:1.2;">Relancer sur la validation du devis</h4>
+              <p style="font-size:14px;color:var(--muted);line-height:1.5;margin:0 0 14px;">Relancer le client au sujet du devis et vérifier les ajustements avant la prochaine étape.</p>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">2 tâches · 2 tags</span>
+                <div style="margin-left:auto;display:flex;gap:8px;">
+                  <button style="border:none;background:var(--ink);color:var(--surface);font-family:inherit;font-size:13px;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer;">Valider</button>
+                  <button style="border:1px solid var(--border);background:transparent;color:var(--muted);font-family:inherit;font-size:13px;padding:9px 14px;border-radius:10px;cursor:pointer;">Modifier</button>
+                </div>
+              </div>
+            </div>
+            <!-- card medium -->
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);background:var(--paper);border:1px dashed var(--border);padding:5px 11px;border-radius:100px;">Studio interne ?</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:.05em;">● MOYENNE 0.61</span>
+              </div>
+              <h4 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0 0 6px;line-height:1.2;">Refonte du système de couleurs</h4>
+              <p style="font-size:14px;color:var(--muted);line-height:1.5;margin:0 0 14px;">Idée de palette plus chaude pour la marque. À rattacher — projet incertain.</p>
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">0 tâche · note</span>
+                <div style="margin-left:auto;display:flex;gap:8px;">
+                  <button style="border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-family:inherit;font-size:13px;font-weight:600;padding:9px 16px;border-radius:10px;cursor:pointer;">Choisir projet</button>
+                </div>
+              </div>
+            </div>
+            <!-- card weak -->
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:18px;opacity:.96;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <span style="font-size:12px;color:var(--faint);">Aucun projet reconnu</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);letter-spacing:.05em;">● FAIBLE 0.28</span>
+              </div>
+              <h4 style="font-size:17px;font-weight:700;letter-spacing:-0.01em;margin:0 0 6px;line-height:1.2;">Penser à réserver le studio photo</h4>
+              <p style="font-size:14px;color:var(--muted);line-height:1.5;margin:0;">À classer manuellement.</p>
+            </div>
+          </div>
+          <div style="height:78px;border-top:1px solid var(--hair);background:var(--surface);display:flex;align-items:center;justify-content:space-around;padding:0 24px 12px;flex-shrink:0;">
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◉</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Capture</div></div>
+            <div style="text-align:center;color:var(--accent);"><div style="font-size:19px;">▤</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Inbox</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◷</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Auj.</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▦</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Projets</div></div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Desktop: Inbox dashboard -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Tableau de bord — Inbox</figcaption>
+        <div style="width:1180px;height:720px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);display:flex;">
+          <!-- sidebar -->
+          <div style="width:236px;background:var(--paper);border-right:1px solid var(--border);padding:26px 18px;display:flex;flex-direction:column;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:26px;"><div style="width:22px;height:22px;border-radius:7px;background:var(--accent);"></div><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);">Mantara</span></div>
+            <button style="width:100%;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;padding:13px;border-radius:12px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:22px;">◉ Nouvelle capture</button>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;font-weight:600;">▤ Inbox <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:100px;">4</span></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">◷ Aujourd'hui</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">▦ Projets</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">⌕ Recherche</div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:24px 12px 10px;">Projets actifs</div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;color:var(--muted);font-size:13px;"><span style="width:7px;height:7px;border-radius:2px;background:var(--accent);"></span>Client X — Site vitrine</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;color:var(--muted);font-size:13px;"><span style="width:7px;height:7px;border-radius:2px;background:#3f6b8c;"></span>Studio interne</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;color:var(--muted);font-size:13px;"><span style="width:7px;height:7px;border-radius:2px;background:#4f6b4a;"></span>Refonte de marque</div>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid var(--border);"><div style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;">JM</div><div style="font-size:13px;color:var(--muted);">Jean M.</div><span style="margin-left:auto;color:var(--faint);">⚙</span></div>
+          </div>
+          <!-- list -->
+          <div style="flex:1;border-right:1px solid var(--border);display:flex;flex-direction:column;min-width:0;">
+            <div style="padding:22px 26px 16px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;">
+              <h3 style="font-size:22px;font-weight:800;letter-spacing:-0.02em;margin:0;">Inbox</h3>
+              <div style="display:flex;gap:8px;">
+                <span style="font-size:12px;color:var(--ink);border:1px solid var(--border);padding:6px 12px;border-radius:100px;background:var(--paper);">Toutes · 4</span>
+                <span style="font-size:12px;color:var(--muted);padding:6px 12px;">À vérifier · 2</span>
+              </div>
+            </div>
+            <div style="flex:1;overflow:hidden;padding:14px 18px;display:flex;flex-direction:column;gap:10px;">
+              <div style="background:var(--paper);border:1px solid var(--accent);border-radius:14px;padding:15px 17px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink);"><span style="width:7px;height:7px;border-radius:2px;background:var(--accent);"></span>Client X — Site vitrine</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--good);">● FORTE 0.92</span></div>
+                <h4 style="font-size:16px;font-weight:700;margin:0 0 4px;">Relancer sur la validation du devis</h4>
+                <p style="font-size:13px;color:var(--muted);margin:0;">2 tâches · 2 tags</p>
+              </div>
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px 17px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--muted);border:1px dashed var(--border);padding:3px 9px;border-radius:100px;">Studio interne ?</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--amber);">● MOYENNE 0.61</span></div>
+                <h4 style="font-size:16px;font-weight:700;margin:0 0 4px;">Refonte du système de couleurs</h4>
+                <p style="font-size:13px;color:var(--muted);margin:0;">note · projet incertain</p>
+              </div>
+              <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:15px 17px;">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-size:12px;color:var(--faint);">Aucun projet</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--faint);">● FAIBLE 0.28</span></div>
+                <h4 style="font-size:16px;font-weight:700;margin:0 0 4px;">Réserver le studio photo</h4>
+                <p style="font-size:13px;color:var(--muted);margin:0;">à classer</p>
+              </div>
+            </div>
+          </div>
+          <!-- detail panel -->
+          <div style="width:340px;flex-shrink:0;display:flex;flex-direction:column;">
+            <div style="padding:22px 24px 16px;border-bottom:1px solid var(--hair);">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;"><span style="display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--ink);background:var(--paper);border:1px solid var(--border);padding:5px 11px;border-radius:100px;"><span style="width:7px;height:7px;border-radius:2px;background:var(--accent);"></span>Client X — Site vitrine</span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--good);">0.92</span></div>
+              <h3 style="font-size:19px;font-weight:800;letter-spacing:-0.01em;margin:0;line-height:1.15;">Relancer sur la validation du devis</h3>
+            </div>
+            <div style="flex:1;overflow:hidden;padding:18px 24px;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Note reformulée</div>
+              <p style="font-size:14px;line-height:1.55;color:var(--ink);margin:0 0 20px;">Relancer le client au sujet de la validation du devis et vérifier si des ajustements sont nécessaires avant la prochaine étape.</p>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Tâches extraites</div>
+              <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">
+                <div style="display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:11px 13px;"><span style="width:16px;height:16px;border:1.5px solid var(--muted);border-radius:5px;flex-shrink:0;"></span><span style="font-size:13px;flex:1;">Relancer le client pour la validation</span><span style="width:7px;height:7px;border-radius:50%;background:var(--amber);"></span></div>
+                <div style="display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--border);border-radius:10px;padding:11px 13px;"><span style="width:16px;height:16px;border:1.5px solid var(--muted);border-radius:5px;flex-shrink:0;"></span><span style="font-size:13px;flex:1;">Vérifier le périmètre</span><span style="width:7px;height:7px;border-radius:50%;background:var(--faint);"></span></div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;"><span style="font-size:11px;color:var(--muted);background:var(--paper);border:1px solid var(--border);padding:4px 10px;border-radius:100px;">#devis</span><span style="font-size:11px;color:var(--muted);background:var(--paper);border:1px solid var(--border);padding:4px 10px;border-radius:100px;">#relance</span></div>
+            </div>
+            <div style="padding:16px 24px;border-top:1px solid var(--hair);display:flex;gap:10px;"><button style="flex:1;border:none;background:var(--ink);color:var(--surface);font-family:inherit;font-size:14px;font-weight:600;padding:12px;border-radius:11px;cursor:pointer;">Valider & classer</button><button style="border:1px solid var(--border);background:transparent;color:var(--muted);font-family:inherit;font-size:14px;padding:12px 16px;border-radius:11px;cursor:pointer;">⋯</button></div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION: CAPTURE DETAIL ============ -->
+  <section data-screen-label="Détail de capture" style="margin-top:96px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">04</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Détail de capture</h2>
+      <span style="font-size:15px;color:var(--muted);">Voir et corriger le résultat IA · la transcription brute reste toujours accessible</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: détail -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Détail & correction</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:6px 26px 14px;display:flex;align-items:center;justify-content:space-between;"><span style="font-size:14px;color:var(--muted);">← Inbox</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--good);">● FORTE 0.92</span></div>
+          <div style="flex:1;overflow:hidden;padding:0 26px;display:flex;flex-direction:column;gap:20px;">
+            <div>
+              <input value="Relancer sur la validation du devis" style="width:100%;border:none;background:transparent;font-family:inherit;font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);padding:0;line-height:1.15;" />
+              <div style="display:inline-flex;align-items:center;gap:7px;font-size:13px;color:var(--ink);background:var(--paper);border:1px solid var(--border);padding:6px 12px;border-radius:100px;margin-top:12px;"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent);"></span>Client X — Site vitrine <span style="color:var(--muted);">▾</span></div>
+            </div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Note reformulée</div>
+              <div style="background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:15px;font-size:14px;line-height:1.55;">Relancer le client au sujet de la validation du devis et vérifier si des ajustements sont nécessaires avant la prochaine étape.</div>
+            </div>
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Tâches · 2</span><span style="font-size:13px;color:var(--accent);">+ Ajouter</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:13px;"><span style="width:18px;height:18px;border:1.5px solid var(--muted);border-radius:6px;flex-shrink:0;"></span><span style="font-size:14px;flex:1;">Relancer le client pour la validation</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--amber);">HAUTE</span></div>
+                <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:13px;"><span style="width:18px;height:18px;border:1.5px solid var(--muted);border-radius:6px;flex-shrink:0;"></span><span style="font-size:14px;flex:1;">Vérifier le périmètre du site</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);">NORMALE</span></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Transcription brute</div>
+              <div style="background:transparent;border:1px dashed var(--border);border-radius:14px;padding:15px;font-size:13px;line-height:1.55;color:var(--muted);font-style:italic;">« euh… faut que je relance le client X pour le devis là, avant vendredi si possible, et voir si on ajuste le périmètre du site »</div>
+            </div>
+          </div>
+          <div style="padding:14px 26px 22px;border-top:1px solid var(--hair);display:flex;gap:10px;flex-shrink:0;"><button style="flex:1;border:none;background:var(--ink);color:var(--surface);font-family:inherit;font-size:15px;font-weight:600;padding:15px;border-radius:13px;cursor:pointer;">Valider</button><button style="border:1px solid var(--border);background:transparent;color:var(--muted);font-family:inherit;font-size:15px;padding:15px 18px;border-radius:13px;cursor:pointer;">Archiver</button></div>
+        </div>
+      </figure>
+
+      <!-- Desktop: détail (two-col) -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Détail — brut vs. proposé</figcaption>
+        <div style="width:820px;height:600px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);display:flex;flex-direction:column;">
+          <div style="padding:24px 32px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;">
+            <div><span style="font-size:13px;color:var(--muted);">Inbox / </span><span style="font-size:13px;color:var(--ink);font-weight:600;">Client X — Site vitrine</span></div>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--good);">● Auto-validée par l'IA · confiance 0.92</span>
+          </div>
+          <div style="flex:1;display:flex;min-height:0;">
+            <div style="flex:1;padding:28px 32px;border-right:1px solid var(--hair);overflow:hidden;">
+              <input value="Relancer sur la validation du devis" style="width:100%;border:none;background:transparent;font-family:inherit;font-size:26px;font-weight:800;letter-spacing:-0.02em;color:var(--ink);padding:0 0 16px;" />
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">Note reformulée</div>
+              <div style="background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:16px;font-size:15px;line-height:1.6;margin-bottom:24px;">Relancer le client au sujet de la validation du devis et vérifier si des ajustements sont nécessaires avant la prochaine étape.</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Tâches</span><span style="font-size:13px;color:var(--accent);">+ Ajouter</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;"></span><span style="font-size:14px;flex:1;">Relancer le client pour la validation</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--amber);">HAUTE</span></div>
+                <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;"></span><span style="font-size:14px;flex:1;">Vérifier le périmètre du site</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);">NORMALE</span></div>
+              </div>
+            </div>
+            <div style="width:300px;flex-shrink:0;padding:28px 28px;background:var(--paper);overflow:hidden;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Transcription brute</div>
+              <div style="font-size:13px;line-height:1.6;color:var(--muted);font-style:italic;margin-bottom:22px;">« euh… faut que je relance le client X pour le devis là, avant vendredi si possible, et voir si on ajuste le périmètre du site »</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Pourquoi ce projet ?</div>
+              <div style="font-size:13px;line-height:1.55;color:var(--ink);margin-bottom:22px;">La capture mentionne le devis et le site vitrine, déjà associés à ce projet.</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Tags</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;"><span style="font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:4px 10px;border-radius:100px;">#devis</span><span style="font-size:11px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:4px 10px;border-radius:100px;">#relance</span></div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION: PROJETS ============ -->
+  <section data-screen-label="Projets" style="margin-top:96px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">05</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Projets</h2>
+      <span style="font-size:15px;color:var(--muted);">Client, mission interne, opportunité, chantier, idée · le niveau d'organisation principal</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: liste projets -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Liste des projets</figcaption>
+        <div style="width:378px;height:800px;background:var(--paper);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:6px 26px 16px;display:flex;align-items:baseline;justify-content:space-between;"><h3 style="font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:0;">Projets</h3><span style="font-size:22px;color:var(--muted);">+</span></div>
+          <div style="flex:1;overflow:hidden;padding:0 22px;display:flex;flex-direction:column;gap:12px;">
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:17px;">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px;"><span style="width:9px;height:9px;border-radius:3px;background:var(--accent);"></span><span style="font-size:16px;font-weight:700;">Client X — Site vitrine</span><span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--good);letter-spacing:.05em;">ACTIF</span></div>
+              <div style="display:flex;gap:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);"><span>5 tâches ouvertes</span><span>12 notes</span></div>
+              <div style="margin-top:12px;height:4px;background:var(--paper);border-radius:3px;overflow:hidden;"><div style="width:62%;height:100%;background:var(--accent);"></div></div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:17px;">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px;"><span style="width:9px;height:9px;border-radius:3px;background:#3f6b8c;"></span><span style="font-size:16px;font-weight:700;">Studio interne</span><span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--good);letter-spacing:.05em;">ACTIF</span></div>
+              <div style="display:flex;gap:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);"><span>3 tâches ouvertes</span><span>8 notes</span></div>
+              <div style="margin-top:12px;height:4px;background:var(--paper);border-radius:3px;overflow:hidden;"><div style="width:40%;height:100%;background:#3f6b8c;"></div></div>
+            </div>
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:17px;">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:10px;"><span style="width:9px;height:9px;border-radius:3px;background:#4f6b4a;"></span><span style="font-size:16px;font-weight:700;">Refonte de marque</span><span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--amber);letter-spacing:.05em;">EN PAUSE</span></div>
+              <div style="display:flex;gap:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);"><span>1 tâche ouverte</span><span>4 notes</span></div>
+              <div style="margin-top:12px;height:4px;background:var(--paper);border-radius:3px;overflow:hidden;"><div style="width:22%;height:100%;background:#4f6b4a;"></div></div>
+            </div>
+            <div style="background:transparent;border:1px dashed var(--border);border-radius:18px;padding:17px;display:flex;align-items:center;gap:10px;color:var(--muted);font-size:14px;">+ Nouveau projet</div>
+          </div>
+          <div style="height:78px;border-top:1px solid var(--hair);background:var(--surface);display:flex;align-items:center;justify-content:space-around;padding:0 24px 12px;flex-shrink:0;">
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◉</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Capture</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▤</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Inbox</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◷</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Auj.</div></div>
+            <div style="text-align:center;color:var(--accent);"><div style="font-size:19px;">▦</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Projets</div></div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Mobile: détail projet -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Détail d'un projet</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:6px 26px 16px;">
+            <div style="font-size:14px;color:var(--muted);margin-bottom:14px;">← Projets</div>
+            <div style="display:flex;align-items:center;gap:9px;margin-bottom:6px;"><span style="width:10px;height:10px;border-radius:3px;background:var(--accent);"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;color:var(--good);">ACTIF · CLIENT</span></div>
+            <h3 style="font-size:25px;font-weight:800;letter-spacing:-0.02em;margin:0 0 4px;line-height:1.1;">Client X — Site vitrine</h3>
+            <p style="font-size:13px;color:var(--muted);margin:0;">Dernière activité il y a 2 h</p>
+          </div>
+          <div style="flex:1;overflow:hidden;padding:0 26px;display:flex;flex-direction:column;gap:20px;">
+            <div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Tâches ouvertes · 5</span></div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:12px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;flex-shrink:0;"></span><span style="font-size:14px;flex:1;">Relancer sur la validation</span><span style="width:7px;height:7px;border-radius:50%;background:var(--amber);"></span></div>
+                <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:12px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;flex-shrink:0;"></span><span style="font-size:14px;flex:1;">Vérifier le périmètre</span><span style="width:7px;height:7px;border-radius:50%;background:var(--faint);"></span></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Notes récentes</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:13px;"><div style="font-size:14px;font-weight:600;margin-bottom:3px;">Retour du client sur la maquette</div><div style="font-size:12px;color:var(--muted);">il y a 2 h · voix</div></div>
+                <div style="background:var(--paper);border:1px solid var(--border);border-radius:12px;padding:13px;"><div style="font-size:14px;font-weight:600;margin-bottom:3px;">Budget photo validé</div><div style="font-size:12px;color:var(--muted);">hier · texte</div></div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:14px 26px 22px;border-top:1px solid var(--hair);flex-shrink:0;"><button style="width:100%;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:15px;font-weight:600;padding:15px;border-radius:13px;cursor:pointer;">◉ Capturer pour ce projet</button></div>
+        </div>
+      </figure>
+
+      <!-- Desktop: projet dashboard -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Vue projet</figcaption>
+        <div style="width:1000px;height:640px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);display:flex;">
+          <div style="width:236px;background:var(--paper);border-right:1px solid var(--border);padding:26px 18px;display:flex;flex-direction:column;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:26px;"><div style="width:22px;height:22px;border-radius:7px;background:var(--accent);"></div><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);">Mantara</span></div>
+            <button style="width:100%;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;padding:13px;border-radius:12px;cursor:pointer;margin-bottom:22px;">◉ Nouvelle capture</button>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">▤ Inbox <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:100px;">4</span></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">◷ Aujourd'hui</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;font-weight:600;">▦ Projets</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">⌕ Recherche</div>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:24px 12px 10px;">Projets actifs</div>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;color:var(--ink);font-size:13px;font-weight:600;background:var(--accent-soft);border-radius:8px;"><span style="width:7px;height:7px;border-radius:2px;background:var(--accent);"></span>Client X — Site vitrine</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;color:var(--muted);font-size:13px;"><span style="width:7px;height:7px;border-radius:2px;background:#3f6b8c;"></span>Studio interne</div>
+              <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;color:var(--muted);font-size:13px;"><span style="width:7px;height:7px;border-radius:2px;background:#4f6b4a;"></span>Refonte de marque</div>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid var(--border);"><div style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;">JM</div><div style="font-size:13px;color:var(--muted);">Jean M.</div><span style="margin-left:auto;color:var(--faint);">⚙</span></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+            <div style="padding:26px 34px 20px;border-bottom:1px solid var(--hair);">
+              <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;"><span style="width:10px;height:10px;border-radius:3px;background:var(--accent);"></span><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.12em;color:var(--good);">ACTIF · PROJET CLIENT</span></div>
+              <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+                <div><h3 style="font-size:28px;font-weight:800;letter-spacing:-0.02em;margin:0;">Client X — Site vitrine</h3><p style="font-size:13px;color:var(--muted);margin:6px 0 0;">Client : Studio X · dernière activité il y a 2 h</p></div>
+                <div style="display:flex;gap:26px;text-align:right;">
+                  <div><div style="font-size:24px;font-weight:800;">5</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);">TÂCHES</div></div>
+                  <div><div style="font-size:24px;font-weight:800;">12</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);">NOTES</div></div>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1;display:flex;min-height:0;">
+              <div style="flex:1;padding:24px 34px;border-right:1px solid var(--hair);overflow:hidden;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Tâches ouvertes</div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;"></span><span style="font-size:14px;flex:1;">Relancer sur la validation du devis</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--amber);">HAUTE</span></div>
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;"></span><span style="font-size:14px;flex:1;">Vérifier le périmètre du site</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);">NORMALE</span></div>
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;opacity:.55;"><span style="width:17px;height:17px;background:var(--good);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;">✓</span><span style="font-size:14px;flex:1;text-decoration:line-through;">Envoyer les maquettes v2</span></div>
+                </div>
+              </div>
+              <div style="width:290px;flex-shrink:0;padding:24px 28px;background:var(--paper);overflow:hidden;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Activité</div>
+                <div style="display:flex;flex-direction:column;gap:14px;">
+                  <div style="display:flex;gap:11px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--accent);margin-top:5px;flex-shrink:0;"></span><div><div style="font-size:13px;font-weight:600;">Note ajoutée (voix)</div><div style="font-size:12px;color:var(--muted);">il y a 2 h · auto-validée</div></div></div>
+                  <div style="display:flex;gap:11px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--border);margin-top:5px;flex-shrink:0;"></span><div><div style="font-size:13px;font-weight:600;">Tâche terminée</div><div style="font-size:12px;color:var(--muted);">hier</div></div></div>
+                  <div style="display:flex;gap:11px;"><span style="width:8px;height:8px;border-radius:50%;background:var(--border);margin-top:5px;flex-shrink:0;"></span><div><div style="font-size:13px;font-weight:600;">Projet créé</div><div style="font-size:12px;color:var(--muted);">il y a 6 j</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION: TÂCHES ============ -->
+  <section data-screen-label="Tâches" style="margin-top:96px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">06</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Tâches</h2>
+      <span style="font-size:15px;color:var(--muted);">Savoir quoi faire · vue « Aujourd'hui » et vue « Par projet »</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: Aujourd'hui -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Aujourd'hui</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:6px 26px 8px;"><h3 style="font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:0;">Aujourd'hui</h3><p style="font-size:13px;color:var(--muted);margin:6px 0 0;">3 tâches · pas de retard. Respirez.</p></div>
+          <div style="padding:10px 22px 0;display:flex;gap:8px;"><span style="font-size:12px;color:var(--ink);background:var(--paper);border:1px solid var(--border);padding:7px 14px;border-radius:100px;">À faire</span><span style="font-size:12px;color:var(--muted);padding:7px 14px;">Cette semaine</span><span style="font-size:12px;color:var(--muted);padding:7px 14px;">Par projet</span></div>
+          <div style="flex:1;overflow:hidden;padding:16px 22px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:flex-start;gap:12px;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:15px;"><span style="width:19px;height:19px;border:1.5px solid var(--amber);border-radius:6px;flex-shrink:0;margin-top:1px;"></span><div style="flex:1;"><div style="font-size:15px;font-weight:600;line-height:1.3;">Relancer sur la validation du devis</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><span style="width:6px;height:6px;border-radius:2px;background:var(--accent);"></span><span style="font-size:12px;color:var(--muted);">Client X · <span style="color:var(--amber);">échéance ven.</span></span></div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:12px;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:15px;"><span style="width:19px;height:19px;border:1.5px solid var(--muted);border-radius:6px;flex-shrink:0;margin-top:1px;"></span><div style="flex:1;"><div style="font-size:15px;font-weight:600;line-height:1.3;">Préparer le point studio</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><span style="width:6px;height:6px;border-radius:2px;background:#3f6b8c;"></span><span style="font-size:12px;color:var(--muted);">Studio interne</span></div></div></div>
+            <div style="display:flex;align-items:flex-start;gap:12px;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:15px;"><span style="width:19px;height:19px;border:1.5px solid var(--muted);border-radius:6px;flex-shrink:0;margin-top:1px;"></span><div style="flex:1;"><div style="font-size:15px;font-weight:600;line-height:1.3;">Réserver le studio photo</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><span style="font-size:12px;color:var(--faint);">Sans projet</span></div></div></div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:14px 4px 4px;">Terminées · 2</div>
+            <div style="display:flex;align-items:center;gap:12px;background:transparent;border-radius:14px;padding:10px 15px;opacity:.5;"><span style="width:19px;height:19px;background:var(--good);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;flex-shrink:0;">✓</span><div style="font-size:14px;text-decoration:line-through;">Envoyer les maquettes v2</div></div>
+          </div>
+          <div style="height:78px;border-top:1px solid var(--hair);display:flex;align-items:center;justify-content:space-around;padding:0 24px 12px;flex-shrink:0;">
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◉</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Capture</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▤</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Inbox</div></div>
+            <div style="text-align:center;color:var(--accent);"><div style="font-size:19px;">◷</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Auj.</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▦</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Projets</div></div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Desktop: tâches par projet -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Tâches par projet</figcaption>
+        <div style="width:1000px;height:600px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);display:flex;">
+          <div style="width:236px;background:var(--paper);border-right:1px solid var(--border);padding:26px 18px;display:flex;flex-direction:column;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:26px;"><div style="width:22px;height:22px;border-radius:7px;background:var(--accent);"></div><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);">Mantara</span></div>
+            <button style="width:100%;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;padding:13px;border-radius:12px;cursor:pointer;margin-bottom:22px;">◉ Nouvelle capture</button>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">▤ Inbox <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:100px;">4</span></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:var(--surface);color:var(--ink);font-size:14px;font-weight:600;">◷ Aujourd'hui</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">▦ Projets</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">⌕ Recherche</div>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid var(--border);"><div style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;">JM</div><div style="font-size:13px;color:var(--muted);">Jean M.</div><span style="margin-left:auto;color:var(--faint);">⚙</span></div>
+          </div>
+          <div style="flex:1;display:flex;flex-direction:column;min-width:0;">
+            <div style="padding:24px 32px 18px;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:space-between;">
+              <h3 style="font-size:24px;font-weight:800;letter-spacing:-0.02em;margin:0;">Tâches</h3>
+              <div style="display:flex;gap:6px;"><span style="font-size:12px;color:var(--muted);padding:7px 13px;">Aujourd'hui</span><span style="font-size:12px;color:var(--muted);padding:7px 13px;">Semaine</span><span style="font-size:12px;color:var(--ink);background:var(--paper);border:1px solid var(--border);padding:7px 13px;border-radius:100px;">Par projet</span></div>
+            </div>
+            <div style="flex:1;overflow:hidden;padding:22px 32px;display:flex;flex-direction:column;gap:22px;">
+              <div>
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;"><span style="width:9px;height:9px;border-radius:3px;background:var(--accent);"></span><span style="font-size:14px;font-weight:700;">Client X — Site vitrine</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">2</span></div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;"><span style="width:17px;height:17px;border:1.5px solid var(--amber);border-radius:5px;"></span><span style="font-size:14px;flex:1;">Relancer sur la validation du devis</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--amber);">ven.</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--amber);">HAUTE</span></div>
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;"></span><span style="font-size:14px;flex:1;">Vérifier le périmètre du site</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);">NORMALE</span></div>
+                </div>
+              </div>
+              <div>
+                <div style="display:flex;align-items:center;gap:9px;margin-bottom:12px;"><span style="width:9px;height:9px;border-radius:3px;background:#3f6b8c;"></span><span style="font-size:14px;font-weight:700;">Studio interne</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);">1</span></div>
+                <div style="display:flex;flex-direction:column;gap:8px;">
+                  <div style="display:flex;align-items:center;gap:11px;background:var(--paper);border:1px solid var(--border);border-radius:11px;padding:12px 14px;"><span style="width:17px;height:17px;border:1.5px solid var(--muted);border-radius:5px;"></span><span style="font-size:14px;flex:1;">Préparer le point studio</span><span style="font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--muted);">NORMALE</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION: RECHERCHE ============ -->
+  <section data-screen-label="Recherche" style="margin-top:96px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">07</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Recherche globale</h2>
+      <span style="font-size:15px;color:var(--muted);">Notes, tâches, projets, clients — et jusqu'à la transcription brute</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: recherche -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Résultats</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:8px 22px 12px;"><div style="display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--border);border-radius:14px;padding:14px 16px;"><span style="color:var(--muted);">⌕</span><span style="font-size:16px;color:var(--ink);flex:1;">devis</span><span style="color:var(--faint);">✕</span></div></div>
+          <div style="padding:2px 22px 0;display:flex;gap:7px;flex-wrap:wrap;"><span style="font-size:11px;color:var(--ink);background:var(--paper);border:1px solid var(--border);padding:6px 12px;border-radius:100px;">Tout · 6</span><span style="font-size:11px;color:var(--muted);padding:6px 12px;">Notes</span><span style="font-size:11px;color:var(--muted);padding:6px 12px;">Tâches</span><span style="font-size:11px;color:var(--muted);padding:6px 12px;">Projets</span></div>
+          <div style="flex:1;overflow:hidden;padding:16px 22px;display:flex;flex-direction:column;gap:9px;">
+            <div style="background:var(--paper);border:1px solid var(--border);border-radius:13px;padding:14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:5px;">TÂCHE</span><span style="font-size:11px;color:var(--muted);">Client X</span></div><div style="font-size:14px;font-weight:600;">Relancer sur la validation du <mark style="background:var(--accent-soft);color:var(--accent);padding:0 2px;border-radius:3px;">devis</mark></div></div>
+            <div style="background:var(--paper);border:1px solid var(--border);border-radius:13px;padding:14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:2px 7px;border-radius:5px;">NOTE</span><span style="font-size:11px;color:var(--muted);">Client X</span></div><div style="font-size:14px;font-weight:600;margin-bottom:3px;">Relancer sur la validation du <mark style="background:var(--accent-soft);color:var(--accent);padding:0 2px;border-radius:3px;">devis</mark></div><div style="font-size:12px;color:var(--muted);font-style:italic;">…transcription : « le <mark style="background:var(--accent-soft);color:var(--accent);padding:0 2px;border-radius:3px;">devis</mark> là, avant vendredi… »</div></div>
+            <div style="background:var(--paper);border:1px solid var(--border);border-radius:13px;padding:14px;"><div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:2px 7px;border-radius:5px;">PROJET</span></div><div style="font-size:14px;font-weight:600;">Client X — Site vitrine</div></div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Desktop: recherche (command palette) -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Palette de recherche (⌘K)</figcaption>
+        <div style="width:720px;height:520px;background:var(--canvas);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;align-items:flex-start;justify-content:center;padding-top:56px;">
+          <div style="position:absolute;inset:0;background:rgba(38,34,28,.3);"></div>
+          <div style="position:relative;width:560px;background:var(--surface);border-radius:18px;box-shadow:0 40px 80px -30px rgba(40,34,26,.6);overflow:hidden;">
+            <div style="display:flex;align-items:center;gap:12px;padding:20px 22px;border-bottom:1px solid var(--hair);"><span style="color:var(--muted);font-size:18px;">⌕</span><span style="font-size:18px;color:var(--ink);flex:1;">devis</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--faint);border:1px solid var(--border);padding:3px 8px;border-radius:6px;">esc</span></div>
+            <div style="padding:12px 14px;">
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding:6px 10px;">Tâches</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;background:var(--paper);"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:5px;">TÂCHE</span><span style="font-size:14px;flex:1;">Relancer sur la validation du <mark style="background:var(--accent-soft);color:var(--accent);padding:0 2px;border-radius:3px;">devis</mark></span><span style="font-size:12px;color:var(--muted);">Client X</span></div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding:12px 10px 6px;">Notes & transcriptions</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;"><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);border:1px solid var(--border);padding:2px 7px;border-radius:5px;">NOTE</span><span style="font-size:14px;flex:1;">…« le <mark style="background:var(--accent-soft);color:var(--accent);padding:0 2px;border-radius:3px;">devis</mark> là, avant vendredi… »</span><span style="font-size:12px;color:var(--muted);">Client X</span></div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);padding:12px 10px 6px;">Projets</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;"><span style="width:8px;height:8px;border-radius:2px;background:var(--accent);"></span><span style="font-size:14px;flex:1;">Client X — Site vitrine</span></div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ============ SECTION: PARAMÈTRES ============ -->
+  <section data-screen-label="Paramètres" style="margin-top:96px;">
+    <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;">
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:500;">08</span>
+      <h2 style="font-size:26px;font-weight:700;letter-spacing:-0.02em;margin:0;">Paramètres</h2>
+      <span style="font-size:15px;color:var(--muted);">Ajuster le niveau de contrôle sur l'IA · compte & authentification</span>
+    </div>
+    <div style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;">
+
+      <!-- Mobile: paramètres -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Mobile · Réglages</figcaption>
+        <div style="width:378px;height:800px;background:var(--surface);border:1px solid var(--border);border-radius:40px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);position:relative;display:flex;flex-direction:column;">
+          <div style="height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;font-family:'IBM Plex Mono',monospace;font-size:12px;flex-shrink:0;"><span>9:41</span><span style="letter-spacing:.1em;color:var(--muted);">● ● ●</span></div>
+          <div style="padding:6px 26px 14px;"><h3 style="font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:0;">Paramètres</h3></div>
+          <div style="flex:1;overflow:hidden;padding:0 24px;display:flex;flex-direction:column;gap:24px;">
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Validation par l'IA</div>
+              <div style="background:var(--paper);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+                <div style="display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--hair);"><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Auto-validation</div><div style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:2px;">Classe seule les captures à forte confiance</div></div><div style="width:46px;height:27px;border-radius:100px;background:var(--accent);position:relative;flex-shrink:0;"><div style="position:absolute;top:3px;right:3px;width:21px;height:21px;border-radius:50%;background:#fff;"></div></div></div>
+                <div style="display:flex;align-items:center;gap:14px;padding:16px;"><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Tout passe par l'Inbox</div><div style="font-size:12px;color:var(--muted);line-height:1.4;margin-top:2px;">Valider chaque capture manuellement</div></div><div style="width:46px;height:27px;border-radius:100px;background:var(--border);position:relative;flex-shrink:0;"><div style="position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;"></div></div></div>
+              </div>
+            </div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Tâches</div>
+              <div style="background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:16px;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">Priorité par défaut</div><div style="display:flex;gap:8px;"><span style="flex:1;text-align:center;font-size:13px;color:var(--muted);border:1px solid var(--border);padding:9px;border-radius:9px;">Basse</span><span style="flex:1;text-align:center;font-size:13px;color:var(--surface);background:var(--ink);padding:9px;border-radius:9px;font-weight:600;">Normale</span><span style="flex:1;text-align:center;font-size:13px;color:var(--muted);border:1px solid var(--border);padding:9px;border-radius:9px;">Haute</span></div></div>
+            </div>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Compte</div>
+              <div style="background:var(--paper);border:1px solid var(--border);border-radius:16px;overflow:hidden;">
+                <div style="display:flex;align-items:center;gap:12px;padding:16px;border-bottom:1px solid var(--hair);"><div style="width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">JM</div><div style="flex:1;"><div style="font-size:14px;font-weight:600;">Jean Mercier</div><div style="font-size:12px;color:var(--muted);">jean@mantara.co</div></div></div>
+                <div style="padding:15px 16px;font-size:14px;color:var(--ink);border-bottom:1px solid var(--hair);">Changer le mot de passe</div>
+                <div style="padding:15px 16px;font-size:14px;color:var(--accent);">Se déconnecter</div>
+              </div>
+            </div>
+          </div>
+          <div style="height:78px;border-top:1px solid var(--hair);display:flex;align-items:center;justify-content:space-around;padding:0 24px 12px;flex-shrink:0;">
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◉</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Capture</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▤</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Inbox</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">◷</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Auj.</div></div>
+            <div style="text-align:center;color:var(--faint);"><div style="font-size:19px;">▦</div><div style="font-size:10px;font-family:'IBM Plex Mono',monospace;margin-top:2px;">Projets</div></div>
+          </div>
+        </div>
+      </figure>
+
+      <!-- Desktop: paramètres -->
+      <figure style="margin:0;display:flex;flex-direction:column;gap:14px;">
+        <figcaption style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);">Bureau · Réglages</figcaption>
+        <div style="width:1000px;height:600px;background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:0 34px 64px -34px rgba(40,34,26,.45);display:flex;">
+          <div style="width:236px;background:var(--paper);border-right:1px solid var(--border);padding:26px 18px;display:flex;flex-direction:column;flex-shrink:0;">
+            <div style="display:flex;align-items:center;gap:10px;padding:0 8px;margin-bottom:26px;"><div style="width:22px;height:22px;border-radius:7px;background:var(--accent);"></div><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);">Mantara</span></div>
+            <button style="width:100%;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:14px;font-weight:600;padding:13px;border-radius:12px;cursor:pointer;margin-bottom:22px;">◉ Nouvelle capture</button>
+            <div style="display:flex;flex-direction:column;gap:2px;">
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">▤ Inbox <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--accent);color:#fff;padding:2px 8px;border-radius:100px;">4</span></div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">◷ Aujourd'hui</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">▦ Projets</div>
+              <div style="display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:14px;">⌕ Recherche</div>
+            </div>
+            <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 8px;border-top:1px solid var(--border);background:var(--surface);border-radius:10px;"><div style="width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;">JM</div><div style="font-size:13px;color:var(--ink);font-weight:600;">Jean M.</div><span style="margin-left:auto;color:var(--accent);">⚙</span></div>
+          </div>
+          <div style="flex:1;padding:34px 44px;overflow:hidden;">
+            <h3 style="font-size:26px;font-weight:800;letter-spacing:-0.02em;margin:0 0 28px;">Paramètres</h3>
+            <div style="display:flex;gap:40px;">
+              <div style="flex:1;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Validation par l'IA</div>
+                <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--hair);"><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Auto-validation forte confiance</div><div style="font-size:13px;color:var(--muted);margin-top:2px;">Classe seule les captures sûres</div></div><div style="width:46px;height:27px;border-radius:100px;background:var(--accent);position:relative;flex-shrink:0;"><div style="position:absolute;top:3px;right:3px;width:21px;height:21px;border-radius:50%;background:#fff;"></div></div></div>
+                <div style="display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--hair);"><div style="flex:1;"><div style="font-size:15px;font-weight:600;">Tout passe par l'Inbox</div><div style="font-size:13px;color:var(--muted);margin-top:2px;">Validation manuelle systématique</div></div><div style="width:46px;height:27px;border-radius:100px;background:var(--border);position:relative;flex-shrink:0;"><div style="position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;"></div></div></div>
+                <div style="padding:18px 0;"><div style="font-size:15px;font-weight:600;margin-bottom:12px;">Priorité par défaut des tâches</div><div style="display:flex;gap:8px;max-width:320px;"><span style="flex:1;text-align:center;font-size:13px;color:var(--muted);border:1px solid var(--border);padding:9px;border-radius:9px;">Basse</span><span style="flex:1;text-align:center;font-size:13px;color:var(--surface);background:var(--ink);padding:9px;border-radius:9px;font-weight:600;">Normale</span><span style="flex:1;text-align:center;font-size:13px;color:var(--muted);border:1px solid var(--border);padding:9px;border-radius:9px;">Haute</span></div></div>
+              </div>
+              <div style="width:280px;flex-shrink:0;">
+                <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:12px;">Compte</div>
+                <div style="background:var(--paper);border:1px solid var(--border);border-radius:16px;padding:18px;">
+                  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;"><div style="width:40px;height:40px;border-radius:50%;background:var(--ink);color:var(--surface);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:600;">JM</div><div><div style="font-size:14px;font-weight:600;">Jean Mercier</div><div style="font-size:12px;color:var(--muted);">jean@mantara.co</div></div></div>
+                  <div style="border-top:1px solid var(--border);padding-top:14px;display:flex;flex-direction:column;gap:12px;"><span style="font-size:14px;color:var(--ink);">Changer le mot de passe</span><span style="font-size:14px;color:var(--accent);">Se déconnecter</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+
+    </div>
+  </section>
+
+  <!--MORE-->
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1600,&quot;height&quot;:1000},&quot;accentColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#b5502f&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#b5502f&quot;,&quot;#3f6b8c&quot;,&quot;#4f6b4a&quot;,&quot;#8a5a86&quot;],&quot;section&quot;:&quot;Apparence&quot;},&quot;paper&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Ivoire&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;Ivoire&quot;,&quot;Ardoise&quot;],&quot;section&quot;:&quot;Apparence&quot;},&quot;cornerStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;Doux&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;Doux&quot;,&quot;Net&quot;,&quot;Rond&quot;],&quot;section&quot;:&quot;Apparence&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const accent = this.props.accentColor ?? '#b5502f';
+    const cornerMap = { 'Doux': '20px', 'Net': '6px', 'Rond': '30px' };
+    const radius = cornerMap[this.props.cornerStyle ?? 'Doux'] ?? '20px';
+    let vars = `--accent:${accent};--radius:${radius};`;
+    if ((this.props.paper ?? 'Ivoire') === 'Ardoise') {
+      vars += '--paper:#26241f;--surface:#2f2c26;--ink:#f3eee4;--muted:#a89e8d;--faint:#6c645876;--border:#3c392f;--hair:#34312a;--canvas:#1b1915;--accent-soft:#3a3128;';
+    }
+    // soften accent tint to derive accent-soft when light theme kept default
+    const bars = Array.from({ length: 30 }, (_, i) => {
+      const delay = ((i * 37) % 100) / 100 * 0.9;
+      const h = 16 + ((i * 53) % 40);
+      return React.createElement('span', {
+        key: i,
+        style: {
+          display: 'block', width: '3px', height: h + 'px',
+          background: 'var(--accent)', borderRadius: '3px',
+          transformOrigin: 'center',
+          animation: `vibar 1.05s ${delay.toFixed(2)}s ease-in-out infinite`
+        }
+      });
+    });
+    const wave = React.createElement('div', {
+      style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', height: '64px', width: '100%' }
+    }, bars);
+    return { themeVars: vars, wave };
+  }
+}
+</script>
+</body>
+</html>

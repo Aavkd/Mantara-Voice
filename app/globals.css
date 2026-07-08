@@ -1,0 +1,54 @@
+/*
+ * Design tokens — theme clair "Ivoire" (SPEC_DESIGN.md section 10.4.1).
+ * Etablis des la phase 0 pour que le frontend (phase 4) s'appuie dessus.
+ * Le theme sombre "Ardoise" sera ajoute plus tard.
+ */
+:root {
+  --paper: #f5f0e7;
+  --surface: #fffdf8;
+  --ink: #26221c;
+  --muted: #8a8175;
+  --faint: #b6ad9e;
+  --border: #e7dfd1;
+  --hair: #efe8db;
+  --canvas: #e8e1d4;
+  --accent: #b5502f;
+  --accent-soft: #f3e2d8;
+  --amber: #c08a2e;
+  --good: #5c7a55;
+  --radius: 20px;
+
+  --font-sans:
+    "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  color: var(--ink);
+  background: var(--canvas);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

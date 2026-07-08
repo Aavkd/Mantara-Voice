@@ -1,0 +1,21 @@
+# Modele de configuration du tunnel Cloudflare (SPEC_DESIGN.md sections 9.4 / 9.5).
+# Copiez en `config.yml` puis remplacez <TUNNEL_ID>. Le fichier <TUNNEL_ID>.json
+# (credentials) et cert.pem NE SONT PAS commites (voir .gitignore).
+#
+# Objectif : exposer le backend local (http://localhost:3000) sur
+# https://api.mantara-voice.fr via un tunnel nomme et persistant.
+#
+# Mise en place (a faire une fois, cote utilisateur) :
+#   1. cloudflared tunnel login                         # ouvre le navigateur, choisir la zone mantara-voice.fr
+#   2. cloudflared tunnel create mantara-voice           # cree le tunnel + <TUNNEL_ID>.json ici
+#   3. cloudflared tunnel route dns mantara-voice api.mantara-voice.fr
+#   4. remplir <TUNNEL_ID> ci-dessous, renommer en config.yml
+#   5. pnpm tunnel                                        # ou installer en service Windows (voir README)
+
+tunnel: <TUNNEL_ID>
+credentials-file: ./infra/cloudflared/<TUNNEL_ID>.json
+
+ingress:
+  - hostname: api.mantara-voice.fr
+    service: http://localhost:3000
+  - service: http_status:404
