@@ -15,7 +15,7 @@ Strategie : **backend / API d'abord, frontend ensuite** (spec section 13).
 - Hebergement cible : frontend sur Vercel, backend + base + IA sur la machine
   Mantara, exposes via tunnel Cloudflare.
 
-## Etat : Phase 1 — modele de donnees
+## Etat : Phase 2 - API standalone avec IA simulee
 
 - [x] Phase 0 (fondations) : Next.js + TS, ESLint/Prettier, `.env`, structure,
       Postgres (Docker), `GET /api/health`, modele de tunnel Cloudflare.
@@ -29,6 +29,14 @@ Strategie : **backend / API d'abord, frontend ensuite** (spec section 13).
       moyenne / faible).
 - [x] Helpers d'acces typés scopés `user_id` (`lib/db/queries.ts`) + test de
       scoping (`pnpm test:scoping`).
+- [x] Auth.js credentials (email + mot de passe bcrypt) + routes protegees par
+      session cookie.
+- [x] Routes API phase 2 : captures texte/audio mock, analyse/reanalyse,
+      Inbox, notes, projets, taches, recherche, reglages.
+- [x] Mock IA deterministe couvrant confiance forte/moyenne/faible, nouveau
+      projet, zero tache et JSON IA invalide.
+- [x] Regle d'auto-validation backend (section 7.6) appliquee cote serveur.
+- [x] Suite API sans frontend (`pnpm test:api`).
 - [ ] Tunnel Cloudflare active (login interactif — cote utilisateur, voir
       `infra/cloudflared/README.md`).
 
@@ -47,6 +55,7 @@ Verifier la sante et le scoping :
 ```sh
 node tests/health.mjs         # backend + base (serveur `pnpm dev` requis)
 pnpm test:scoping             # isolation par user_id (base seedee requise)
+pnpm test:api                 # contrat API phase 2 (serveur `pnpm dev` requis)
 ```
 
 ## Scripts
@@ -65,6 +74,7 @@ pnpm test:scoping             # isolation par user_id (base seedee requise)
 | `pnpm db:reset`                  | remet le schema `public` a zero (dev)       |
 | `pnpm db:reset:all`              | reset + migrate + seed                      |
 | `pnpm test:scoping`              | test d'isolation par `user_id`              |
+| `pnpm test:api`                  | suite API phase 2 sans frontend             |
 | `pnpm tunnel`                    | tunnel Cloudflare (config requise, phase 5) |
 
 ## Structure
@@ -72,6 +82,8 @@ pnpm test:scoping             # isolation par user_id (base seedee requise)
 ```
 app/
   api/                 # Route Handlers = backend testable seul
+    auth/[...nextauth] # Auth.js credentials
+    captures/          # texte/audio mock + analyse
     health/route.ts    # GET /api/health
 lib/
   ai/                  # interfaces transcribe() / analyzeCapture()

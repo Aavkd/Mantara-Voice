@@ -1189,38 +1189,42 @@ Ecart assume vs. specification initiale : Postgres tourne en local via Docker (a
 
 ### Phase 1 - Modele de donnees
 
+Statut : **terminee le 8 juillet 2026** (criteres d'acceptation remplis).
+
 Objectif : schema Postgres complet et scope par utilisateur.
 
 Livrables :
 
-- Migrations SQL pour toutes les entites de la section 8 : User (table geree par Auth.js, avec mot de passe hache), UserSettings, Project, Capture, Note, Task, Tag, NoteTag.
-- Enums/contraintes conformes a la section 8 (statuts, priorites, `input_type`, `accepted_by`, etc.).
-- Filtrage applicatif par `user_id` sur toutes les requetes (policies RLS Postgres optionnelles en complement).
-- Script de seed : 1 utilisateur de test, 3 projets, quelques captures/notes/taches (cf. donnees des maquettes : "Client X — Site vitrine", "Studio interne", "Refonte de marque").
+- [x] Migrations SQL pour toutes les entites de la section 8 : User (avec mot de passe hache, prete pour Auth.js en phase 2), UserSettings, Project, Capture, Note, Task, Tag, NoteTag. Migration versionnee `db/migrations/0001_init.sql` ; runner idempotent `scripts/migrate.mjs` (table `schema_migrations`, une transaction par fichier).
+- [x] Enums/contraintes conformes a la section 8 (statuts, priorites, `input_type`, `accepted_by`, etc.). Enums Postgres natifs ; contraintes `confidence` ∈ [0,1] et note `inbox` => `accepted_by` NULL ; ids UUID, `updated_at` par trigger, FK `user_id` en `ON DELETE CASCADE`.
+- [x] Filtrage applicatif par `user_id` sur toutes les requetes. Helpers typés `lib/db/queries.ts` (+ types `lib/db/types.ts`) : chaque fonction filtre par `user_id`. Policies RLS non ajoutees (optionnelles).
+- [x] Script de seed : 1 utilisateur de test, 3 projets, quelques captures/notes/taches (cf. maquettes : "Client X — Site vitrine", "Studio interne", "Refonte de marque"). `scripts/seed.mjs` idempotent ; mot de passe hache via bcryptjs (pur JS, reutilise en phase 2).
 
 Criteres d'acceptation :
 
-- Les migrations s'appliquent proprement sur une base vierge.
-- Un utilisateur ne peut lire/ecrire que ses propres lignes (scoping `user_id` teste).
-- `UserSettings` par defaut = section 7.6 / 9.5.
+- [x] Les migrations s'appliquent proprement sur une base vierge (`pnpm db:reset:all`).
+- [x] Un utilisateur ne peut lire/ecrire que ses propres lignes (scoping `user_id` teste) — `tests/scoping.mjs` (`pnpm test:scoping`).
+- [x] `UserSettings` par defaut = section 7.6 / 9.5 (auto-validation activee, validation manuelle desactivee, priorite normale), verifie par le test de scoping.
 
 ### Phase 2 - API standalone avec IA simulee
+
+Statut : **terminee le 9 juillet 2026** (criteres d'acceptation remplis).
 
 Objectif : figer le contrat API (section 9.5) sans dependre des fournisseurs IA reels.
 
 Livrables :
 
-- Toutes les routes de la section 9.3, respectant les conventions et contrats de la section 9.5.
-- Authentification branchee (Auth.js, email + mot de passe) ; routes protegees renvoient `401/403` correctement.
-- `analyzeCapture()` implemente en mock deterministe renvoyant le JSON de la section 7.3 (cas variables : forte, moyenne, faible, nouveau projet, zero tache).
-- Regle d'auto-validation de la section 7.6 implementee cote backend.
-- Suite de tests API sans frontend (scripts ou collection) couvrant la boucle complete et les cas d'erreur.
+- [x] Toutes les routes de la section 9.3, respectant les conventions et contrats de la section 9.5. Routes implementees sous `app/api/**` : auth, captures texte/audio, analyse/reanalyse, Inbox, notes, projets, taches, recherche, reglages.
+- [x] Authentification branchee (Auth.js, email + mot de passe) ; routes protegees renvoient `401/403` correctement. Auth.js credentials configure dans `auth.ts`, mot de passe verifie avec bcrypt, session cookie, helper `requireSession()`.
+- [x] `analyzeCapture()` implemente en mock deterministe renvoyant le JSON de la section 7.3 (cas variables : forte, moyenne, faible, nouveau projet, zero tache). Implementation dans `lib/ai/mock-analyzer.ts`.
+- [x] Regle d'auto-validation de la section 7.6 implementee cote backend. La decision est recalculee dans le service de capture/analyse, independamment du signal LLM.
+- [x] Suite de tests API sans frontend (scripts ou collection) couvrant la boucle complete et les cas d'erreur. Suite `tests/api-phase2.mjs`, commande `pnpm test:api`.
 
 Criteres d'acceptation :
 
-- Scenario complet vert : creer une capture texte -> analyse -> note auto-validee OU en Inbox selon 7.6 -> modifier -> valider -> retrouver la note dans un projet avec ses taches.
-- Cas d'erreur observables : JSON IA invalide (`422`, capture conservee), projet incertain (Inbox), aucune tache detectee, ressource d'un autre utilisateur (`403`).
-- La forme des reponses est stable et documentee (elle sert de contrat au frontend).
+- [x] Scenario complet vert : creer une capture texte -> analyse -> note auto-validee OU en Inbox selon 7.6 -> modifier -> valider -> retrouver la note dans un projet avec ses taches. Verifie par `pnpm test:api`.
+- [x] Cas d'erreur observables : JSON IA invalide (`422`, capture conservee), projet incertain (Inbox), aucune tache detectee, ressource d'un autre utilisateur (`403`). Verifie par `pnpm test:api`.
+- [x] La forme des reponses est stable et documentee (elle sert de contrat au frontend). Contrat documente dans `SPEC_DESIGN.md` section 9.5, `README.md` et `tests/README.md`.
 
 ### Phase 3 - IA reelle (transcription + analyse)
 

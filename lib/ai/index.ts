@@ -6,4 +6,5 @@ export type {
   ProjectMatch,
   TaskPriority,
 } from "./analyze";
+export { analyzeCapture, InvalidAnalysisError } from "./mock-analyzer";
 export type { Transcriber } from "./transcribe";

@@ -22,11 +22,12 @@ export default function Home() {
         Mantara Voice Inbox
       </p>
       <h1 style={{ fontSize: "1.6rem", fontWeight: 800, letterSpacing: "-0.02em" }}>
-        Backend en cours de construction
+        API phase 2 disponible
       </h1>
       <p style={{ color: "var(--muted)", lineHeight: 1.6 }}>
-        Phase 0 — fondations. L&apos;API est developpee et testable avant le frontend
-        (section 13 du cahier des charges). Verifiez la sante du backend&nbsp;:{" "}
+        Phase 2 - API standalone avec IA simulee. Le backend est testable avant le
+        frontend (section 13 du cahier des charges). Verifiez la sante du
+        backend&nbsp;:{" "}
         <a href="/api/health" style={{ color: "var(--accent)" }}>
           /api/health
         </a>
