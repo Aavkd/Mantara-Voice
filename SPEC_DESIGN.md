@@ -1228,13 +1228,16 @@ Criteres d'acceptation :
 
 ### Phase 3 - IA reelle (transcription + analyse)
 
+Statut : **en cours le 9 juillet 2026**. Le branchement code est pose ; la validation finale attend `ANTHROPIC_API_KEY`, un binaire Whisper local installe/configure, et un test avec vrais fichiers audio.
+
 Objectif : remplacer les mocks par les fournisseurs reels derriere les memes interfaces.
 
 Livrables :
 
-- `transcribe()` branche sur le STT reel (section 9.4) ; `POST /api/captures/audio` fonctionne avec un vrai fichier audio.
-- `analyzeCapture()` branche sur Claude avec sortie JSON structuree ; contexte injecte dans le prompt : liste des projets existants, `client_name` connus, notes recentes pertinentes, tags existants (section 7.2).
-- Gestion robuste des sorties LLM : validation du JSON, repli en Inbox si invalide, jamais de perte de capture.
+- [x] `transcribe()` branche sur le STT reel (section 9.4) ; `POST /api/captures/audio` fonctionne avec un vrai fichier audio. Implementation locale via `faster-whisper`, CLI Whisper ou `whisper.cpp` configurable : `WHISPER_BACKEND=faster-whisper|openai-whisper|whisper-cpp`, `WHISPER_EXECUTABLE`, `WHISPER_PYTHON_EXECUTABLE`, `WHISPER_CPP_MODEL_PATH`; l'audio est ecrit uniquement en temporaire puis supprime.
+- [x] `analyzeCapture()` branche sur Claude avec sortie JSON structuree ; contexte injecte dans le prompt : liste des projets existants, `client_name` connus, notes recentes pertinentes, tags existants (section 7.2). Sans `ANTHROPIC_API_KEY`, le backend conserve le mock deterministe pour les tests de contrat locaux.
+- [x] Gestion robuste des sorties LLM : validation du JSON, repli en Inbox si invalide, jamais de perte de capture.
+- [ ] Validation avec fournisseur reel : les 4 cas ci-dessous doivent etre joues avec la cle Anthropic et de vrais enregistrements audio.
 
 Criteres d'acceptation :
 

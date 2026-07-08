@@ -2,10 +2,16 @@
  * Interface d'analyse IA (SPEC_DESIGN.md sections 7.3 et 9.4).
  *
  * `analyzeCapture()` prend une transcription + du contexte projets et renvoie
- * une structure JSON stable. L'implementation reelle (Claude, via
- * ANTHROPIC_MODEL) arrive en phase 3 ; un mock deterministe arrive en phase 2.
- * Le reste du code ne doit dependre que de cette interface.
+ * une structure JSON stable. Le reste du code ne doit dependre que de cette
+ * interface, que l'implementation soit le mock de dev ou Claude en phase 3.
  */
+
+export class InvalidAnalysisError extends Error {
+  constructor(message = "Sortie IA invalide.") {
+    super(message);
+    this.name = "InvalidAnalysisError";
+  }
+}
 
 export type TaskPriority = "low" | "normal" | "high";
 

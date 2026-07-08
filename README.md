@@ -15,7 +15,7 @@ Strategie : **backend / API d'abord, frontend ensuite** (spec section 13).
 - Hebergement cible : frontend sur Vercel, backend + base + IA sur la machine
   Mantara, exposes via tunnel Cloudflare.
 
-## Etat : Phase 2 - API standalone avec IA simulee
+## Etat : Phase 3 - IA reelle en cours
 
 - [x] Phase 0 (fondations) : Next.js + TS, ESLint/Prettier, `.env`, structure,
       Postgres (Docker), `GET /api/health`, modele de tunnel Cloudflare.
@@ -37,6 +37,15 @@ Strategie : **backend / API d'abord, frontend ensuite** (spec section 13).
       projet, zero tache et JSON IA invalide.
 - [x] Regle d'auto-validation backend (section 7.6) appliquee cote serveur.
 - [x] Suite API sans frontend (`pnpm test:api`).
+- [x] Analyse Claude branchee derriere `analyzeCapture()` avec sortie JSON
+      schemaisee (`output_config.format`) et contexte projets/clients/notes/tags.
+- [x] Route `POST /api/captures/audio` branchee sur Whisper local via
+      `transcribe()` ; l'audio passe par un dossier temporaire supprime en fin
+      de traitement.
+- [x] Fallback dev/test : sans `ANTHROPIC_API_KEY`, l'API garde le mock
+      deterministe pour continuer a verifier le contrat phase 2.
+- [ ] Validation reelle a faire avec `ANTHROPIC_API_KEY` et un binaire Whisper
+      installe/configure sur la machine.
 - [ ] Tunnel Cloudflare active (login interactif — cote utilisateur, voir
       `infra/cloudflared/README.md`).
 
@@ -101,3 +110,17 @@ tests/                 # scripts de test sans frontend (health, scoping)
 
 Variables dans `.env.local` (jamais commite). Template : `.env.example`.
 Detail des variables : spec section 9.4.
+
+Variables IA utiles en phase 3 :
+
+| Variable                    | Role                                                                          |
+| --------------------------- | ----------------------------------------------------------------------------- |
+| `ANTHROPIC_API_KEY`         | Active l'analyse Claude quand elle est renseignee.                            |
+| `ANTHROPIC_MODEL`           | Modele Claude utilise par l'analyse structuree.                               |
+| `AI_ANALYSIS_PROVIDER`      | Optionnel : `anthropic` ou `mock`; vide = auto.                               |
+| `WHISPER_BACKEND`           | Optionnel : `faster-whisper`, `openai-whisper` ou `whisper-cpp`; vide = auto. |
+| `WHISPER_EXECUTABLE`        | Optionnel : chemin vers `whisper`, `whisper-cli`, etc.                        |
+| `WHISPER_PYTHON_EXECUTABLE` | Optionnel : chemin vers Python pour `faster-whisper`.                         |
+| `WHISPER_CPP_MODEL_PATH`    | Requis avec `WHISPER_BACKEND=whisper-cpp`.                                    |
+| `WHISPER_LANGUAGE`          | Langue transmise a Whisper (`fr` par defaut).                                 |
+| `WHISPER_TIMEOUT_MS`        | Timeout de transcription (`600000` ms conseille).                             |

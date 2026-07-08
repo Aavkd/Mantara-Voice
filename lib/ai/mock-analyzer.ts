@@ -1,11 +1,5 @@
+import { InvalidAnalysisError } from "@/lib/ai/analyze";
 import type { AnalysisResult, AnalyzeContext, ProjectMatch } from "@/lib/ai/analyze";
-
-export class InvalidAnalysisError extends Error {
-  constructor(message = "Sortie IA invalide.") {
-    super(message);
-    this.name = "InvalidAnalysisError";
-  }
-}
 
 function includesAny(text: string, needles: string[]): boolean {
   return needles.some((needle) => text.includes(needle));
@@ -53,7 +47,11 @@ export async function analyzeCapture(context: AnalyzeContext): Promise<AnalysisR
       title: "Nouvelle opportunite a cadrer",
       clean_note:
         "La capture semble concerner une nouvelle opportunite qui n'est pas encore rattachee a un projet existant.",
-      project_match: match(null, 0.36, "Aucun projet existant ne correspond clairement."),
+      project_match: match(
+        null,
+        0.36,
+        "Aucun projet existant ne correspond clairement.",
+      ),
       suggest_create_project: true,
       tasks: [
         {
@@ -71,7 +69,11 @@ export async function analyzeCapture(context: AnalyzeContext): Promise<AnalysisR
     return {
       title: "Note de contexte",
       clean_note: raw,
-      project_match: match(studioProject, 0.58, "Le contexte est general et reste a verifier."),
+      project_match: match(
+        studioProject,
+        0.58,
+        "Le contexte est general et reste a verifier.",
+      ),
       suggest_create_project: false,
       tasks: [],
       tags: ["contexte"],

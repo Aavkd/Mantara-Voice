@@ -65,7 +65,9 @@ function validateAnalysisResult(value: unknown): AnalysisResult {
     }
     const confidence = projectMatchValue.confidence;
     if (typeof confidence !== "number" || confidence < 0 || confidence > 1) {
-      throw new InvalidAnalysisError("project_match.confidence doit etre entre 0 et 1.");
+      throw new InvalidAnalysisError(
+        "project_match.confidence doit etre entre 0 et 1.",
+      );
     }
     project_match = {
       project_id:
@@ -90,7 +92,10 @@ function validateAnalysisResult(value: unknown): AnalysisResult {
       throw new InvalidAnalysisError(`tasks[${index}] doit etre un objet.`);
     }
     const priority = task.priority;
-    if (typeof priority !== "string" || !TASK_PRIORITIES.includes(priority as TaskPriority)) {
+    if (
+      typeof priority !== "string" ||
+      !TASK_PRIORITIES.includes(priority as TaskPriority)
+    ) {
       throw new InvalidAnalysisError(`tasks[${index}].priority est invalide.`);
     }
     const dueDate = task.due_date;
@@ -126,7 +131,10 @@ function validateAnalysisResult(value: unknown): AnalysisResult {
   };
 }
 
-async function getOrCreateSettings(userId: string, db: Queryable = pool): Promise<UserSettings> {
+async function getOrCreateSettings(
+  userId: string,
+  db: Queryable = pool,
+): Promise<UserSettings> {
   const existing = await db.query<UserSettings>(
     `SELECT * FROM user_settings WHERE user_id = $1`,
     [userId],
@@ -152,7 +160,9 @@ async function listProjectsForAnalysis(userId: string): Promise<Project[]> {
   return rows;
 }
 
-async function listRecentNotes(userId: string): Promise<Array<{ title: string; body: string }>> {
+async function listRecentNotes(
+  userId: string,
+): Promise<Array<{ title: string; body: string }>> {
   const { rows } = await pool.query<{ title: string; body: string }>(
     `SELECT title, body
      FROM notes
@@ -172,7 +182,10 @@ async function listKnownTags(userId: string): Promise<string[]> {
   return rows.map((row) => row.name);
 }
 
-function findOwnedProject(projects: Project[], projectId: string | null | undefined): Project | null {
+function findOwnedProject(
+  projects: Project[],
+  projectId: string | null | undefined,
+): Project | null {
   if (!projectId) {
     return null;
   }
@@ -196,7 +209,10 @@ function shouldAutoValidate(
   );
 }
 
-function proposedProjectId(analysis: AnalysisResult, matchedProject: Project | null): string | null {
+function proposedProjectId(
+  analysis: AnalysisResult,
+  matchedProject: Project | null,
+): string | null {
   if (!matchedProject || analysis.suggest_create_project) {
     return null;
   }
@@ -311,6 +327,35 @@ export async function markCaptureError(captureId: string): Promise<Capture> {
   return rows[0];
 }
 
+export async function markCaptureTranscribing(
+  userId: string,
+  captureId: string,
+): Promise<Capture> {
+  const { rows } = await pool.query<Capture>(
+    `UPDATE captures
+     SET processing_status = 'transcribing', processed_at = NULL
+     WHERE id = $1 AND user_id = $2
+     RETURNING *`,
+    [captureId, userId],
+  );
+  return rows[0];
+}
+
+export async function setCaptureTranscript(
+  userId: string,
+  captureId: string,
+  rawTranscript: string,
+): Promise<Capture> {
+  const { rows } = await pool.query<Capture>(
+    `UPDATE captures
+     SET raw_transcript = $3, processing_status = 'pending', processed_at = NULL
+     WHERE id = $1 AND user_id = $2
+     RETURNING *`,
+    [captureId, userId, rawTranscript],
+  );
+  return rows[0];
+}
+
 export async function analyzePersistedCapture(
   userId: string,
   captureId: string,
@@ -377,7 +422,7 @@ export async function analyzePersistedCapture(
     const settings = await getOrCreateSettings(userId, client);
     const autoValidated = shouldAutoValidate(settings, analysis, matchedProject);
     const projectId = autoValidated
-      ? matchedProject?.id ?? null
+      ? (matchedProject?.id ?? null)
       : proposedProjectId(analysis, matchedProject);
     const status = autoValidated ? "accepted" : "inbox";
     const acceptedBy = autoValidated ? "ai" : null;
